@@ -18,6 +18,11 @@ class LoginPage {
     cy.get(this.selectorsList().passwordFild).type(password)
     cy.get(this.selectorsList().submitFild).click()
   }
+
+checkAccessInvalid() {
+   cy.get(this.selectorsList().wrongCredentialAlert)
+}
+
 }
 
 export default LoginPage

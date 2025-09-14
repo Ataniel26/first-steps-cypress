@@ -1,30 +1,26 @@
 import userData from '../fixtures/users/userData.json'
+import LoginPage from '../pages/loginPage'
+import DashboardPage from '../pages/dashboardPage'
+import MenuPage from '../pages/menuPage'
+import MyInfoPage from '../pages/myInfoPage'
 
-describe('Orange HRM Test', () => {
 
-  const selectorsList = {
-    usernameFild: '[name="username"]',
-    passwordFild: '[name="password"]',
-    submitFild: "[type='submit']",
-    sectionTitleTopBar: ".oxd-topbar-header-breadcrumb-module",
-    dashboardGrid: ".orangehrm-dashboard-grid",
-    wrongCredentialAlert: ".oxd-alert"
-  }
+const loginPage = new LoginPage() 
+const dashboardPage = new DashboardPage
 
-  it('Login - Success', () => {
+describe('Login Orange HRM Test', () => {
 
-    cy.visit('/auth/login')
-    cy.get(selectorsList.usernameFild).type(userData.userSuccess.username)
-    cy.get(selectorsList.passwordFild).type(userData.userSuccess.password)
-    cy.get(selectorsList.submitFild).click()
-    cy.location('pathname').should('equal', '/web/index.php/dashboard/index')
-    cy.get(selectorsList.dashboardGrid)
-  })
-  it('Login - Fail', () => {
-    cy.visit('/auth/login')
-    cy.get(selectorsList.usernameFild).type(userData.userFail.username)
-    cy.get(selectorsList.passwordFild).type(userData.userFail.password)
-    cy.get(selectorsList.submitFild).click()
-    cy.get(selectorsList.wrongCredentialAlert)
-  })
+it('Login - Fail', () => {
+  loginPage.accessLoginPage()
+  loginPage.loginWithAnyUser(userData.userFail.username, userData.userFail.password)
+  loginPage.checkAccessInvalid()
 })
+
+it('Login - success', () => {
+  loginPage.accessLoginPage()
+  loginPage.loginWithAnyUser(userData.userSuccess.username, userData.userSuccess.password)
+  dashboardPage.checkDashboardPage()
+})
+
+
+}) 
